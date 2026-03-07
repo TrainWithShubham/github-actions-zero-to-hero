@@ -1,0 +1,16 @@
+name: apurva workflow  #this is workflow run-name
+
+#worflow runs on a trigger like run the workflow on main branch when it will be push on github
+on:        
+ push:
+   branches: [main]
+#these are jobs inside the workflow
+jobs: 
+    greet:    # this is the name of the job
+     runs-on: ubuntu-latest #github runner, every job needs a runner to run
+     steps:
+      - name: say hello to user #lists of steps # name of steps
+        run: echo "Hello Dosto"
+
+      - name: say hello to username
+        run: echo "$USER"
