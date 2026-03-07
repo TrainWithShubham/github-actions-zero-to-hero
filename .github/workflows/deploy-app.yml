@@ -79,12 +79,23 @@ jobs:
           # Refresh group membership in current shell session
           newgrp docker || true
 
-      # ─── STEP 6: Deploy with Docker Compose ─────────────────────────────────
+      # ─── STEP 6: Write .env file (sudo strips env vars, .env file is the fix) ──
+      - name: Write .env file for Docker Compose
+        run: |
+          # sudo drops environment variables, so we write them to .env
+          # Docker Compose auto-reads .env from the project directory
+          echo "DOCKERHUB_USER=${DOCKERHUB_USER}" > .env
+          echo "DOCKER_TAG=${DOCKER_TAG}"        >> .env
+          echo "─── .env contents (image details) ───"
+          cat .env
+
+      # ─── STEP 7: Deploy with Docker Compose ─────────────────────────────────
       - name: Deploy with Docker Compose
         run: |
-          # Pull latest image from Docker Hub and recreate container
-          sudo docker compose down
-          sudo docker compose up -d --force-recreate --pull always
+          echo "Pulling image: ${DOCKERHUB_USER}/github-actions-app:${DOCKER_TAG}"
+          # sudo -E preserves env vars AND .env file is also present as backup
+          sudo -E docker compose down
+          sudo -E docker compose up -d --force-recreate --pull always
           echo ""
           echo "=== Running containers ==="
           sudo docker ps
