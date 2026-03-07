@@ -27,4 +27,4 @@ jobs:
               uses: actions/upload-pages-artifact@v4 
               # This action deploys a Pages site previously uploaded as an artifact (eg: uses: actions/)
             - name: Deploy to GitHub Pages
-              uses: actions/deoply-pages@v4
+              uses: actions/deploy-pages@v4
