@@ -1,0 +1,51 @@
+[1mdiff --git a/.github/workflows/cicd.yml b/.github/workflows/cicd.yml[m
+[1mindex 4a984ab..433171e 100644[m
+[1m--- a/.github/workflows/cicd.yml[m
+[1m+++ b/.github/workflows/cicd.yml[m
+[36m@@ -3,7 +3,7 @@[m [mname: CICD[m
+ [m
+ # Manual click (deliver) workflow whenever user needs[m
+ on:[m
+[31m-  workflow_dispatch: [m
+[32m+[m[32m  workflow_dispatch:[m
+     inputs:[m
+       environment:[m
+         description: This is the environment value where this workflow runs[m
+[36m@@ -34,7 +34,7 @@[m [mjobs:[m
+     steps:[m
+       - name: Test the container[m
+         run: echo "Testing the container"[m
+[31m-        [m
+[32m+[m
+   deploy:[m
+     if: inputs.environment == 'dev'[m
+     needs: [build,test][m
+[1mdiff --git a/.github/workflows/deploy-app.yml b/.github/workflows/deploy-app.yml[m
+[1mindex 4ae9aba..356c25a 100644[m
+[1m--- a/.github/workflows/deploy-app.yml[m
+[1m+++ b/.github/workflows/deploy-app.yml[m
+[36m@@ -1,12 +1,14 @@[m
+ name: Deploy Flask App[m
+ [m
+ on:[m
+[32m+[m[32m    push:[m
+[32m+[m[32m      branches: main[m
+     workflow_run:[m
+         workflows: ["Docker Build & Push"] # Name of the upstream workflow[m
+         types: [completed][m
+         branches:[m
+             - main[m
+[31m-    [m
+[32m+[m
+ jobs:[m
+ [m
+     deploy:[m
+[36m@@ -22,7 +24,7 @@[m [mjobs:[m
+               uses: actions/checkout@v4[m
+ [m
+             - name: Set up Docker Compose (optional, usually pre-installed on ubuntu-latest runners)[m
+[31m-              uses: docker/setup-compose-action@v2 [m
+[32m+[m[32m              uses: docker/setup-compose-action@v2[m
+ [m
+             - name: deploy with docker compose[m
+               run: docker compose down && docker compose up -d --build --force-recreate --pull always[m

@@ -3,7 +3,7 @@ name: CICD
 
 # Manual click (deliver) workflow whenever user needs
 on:
-  workflow_dispatch: 
+  workflow_dispatch:
     inputs:
       environment:
         description: This is the environment value where this workflow runs
@@ -34,7 +34,7 @@ jobs:
     steps:
       - name: Test the container
         run: echo "Testing the container"
-        
+
   deploy:
     if: inputs.environment == 'dev'
     needs: [build,test]

@@ -1,12 +1,14 @@
 name: Deploy Flask App
 
 on:
+    push:
+      branches: main
     workflow_run:
         workflows: ["Docker Build & Push"] # Name of the upstream workflow
         types: [completed]
         branches:
             - main
-    
+
 jobs:
 
     deploy:
@@ -22,7 +24,7 @@ jobs:
               uses: actions/checkout@v4
 
             - name: Set up Docker Compose (optional, usually pre-installed on ubuntu-latest runners)
-              uses: docker/setup-compose-action@v2 
+              uses: docker/setup-compose-action@v2
 
             - name: deploy with docker compose
               run: docker compose down && docker compose up -d --build --force-recreate --pull always
